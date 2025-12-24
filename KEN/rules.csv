@@ -1,0 +1,19 @@
+name,start,length,type,formula,condition
+msg_id,1,2,int,,""
+is_0200,1,2,int,1 if x==0x0200 else 0,""
+is_0704,1,2,int,1 if x==0x0704 else 0,""
+
+--- ส่วนของ 0200 (Realtime) ---,,,,,
+lat_0200,21,4,int,x/1000000,"msg_id == 0x0200"
+lon_0200,25,4,int,x/1000000,"msg_id == 0x0200"
+spd_0200,31,2,int,x/10,"msg_id == 0x0200"
+time_0200,34,6,bcd,,"msg_id == 0x0200"
+
+--- ส่วนของ 0704 (Batch Upload) ---,,,,,
+batch_count,13,2,int,x,"msg_id == 0x0704"
+batch_type,15,1,int,x,"msg_id == 0x0704"
+1st_item_len,16,2,int,x,"msg_id == 0x0704"
+lat_batch_1,26,4,int,x/1000000,"msg_id == 0x0704"
+lon_batch_1,30,4,int,x/1000000,"msg_id == 0x0704"
+spd_batch_1,36,2,int,x/10,"msg_id == 0x0704"
+time_batch_1,39,6,bcd,,"msg_id == 0x0704"
