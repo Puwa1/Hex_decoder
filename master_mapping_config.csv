@@ -1,39 +1,125 @@
-Category,SubID,FieldName,StartByte,Length,DataType,Scale
-Header,MsgID,Message ID,0,0,HEX,1
-Header,BodyAttr,Body Attr Raw,0,0,HEX,1
-Header,BodyLen,Body Length,0,0,INT,1
-Header,ProtoVer,Protocol Version,0,0,INT,1
-Header,TermID,CCID,0,0,STRING,1
-Header,TrackCount,Count Up Track,0,0,INT,1
-Standard,1,Alarm Sign,0,4,DWORD,1
-Standard,2,Status,4,4,DWORD,1
-Standard,3,Latitude,8,4,DWORD,1000000
-Standard,4,Longitude,12,4,DWORD,1000000
-Standard,5,Altitude (m),16,2,SIGNED_WORD,1
-Standard,6,Speed (km/h),18,2,WORD,10
-Standard,7,Degree,20,2,WORD,1
-Standard,8,Time,22,6,BCD,1
-Extension,1,Mileage (km),0,4,DWORD,10
-Extension,2,Fuel Level (L),0,2,WORD,10
-Extension,3,ETC. Speed (km/h),0,2,WORD,10
-Extension,14,Video Alarm,0,4,DWORD,1
-Extension,17,Storage stage,0,2,WORD,1
-Extension,25,Extend Status,0,4,DWORD,1
-Extension,30,Network Strength,0,1,BYTE,1
-Extension,31,Satellites use,0,1,BYTE,1
-BSJ_Ext,89,Extended alarm status bit I,0,4,DWORD,1
-BSJ_Ext,00FB,Lock Sim Status,0,4,DWORD,1
-BSJ_Ext,00D8,4G Base Station (LBS),0,9,HEX,1
-BSJ_Ext,002D,External Voltage (V),0,4,DWORD,1000
-BSJ_Ext,00D5,Device IMEI,0,15,STRING,1
-BSJ_Ext,113,Firmware Ver,0,20,STRING,1
-BSJ_Ext,114,DLT_CARD,0,20,STRING,1
-BSJ_Ext,116,BSJ Serial No,0,20,HEX,1
-BSJ_Ext,110,Mobile Network Operator,0,1,STRING,1
-BSJ_Ext,110,DTC_Status,1,1,BYTE,1
-BSJ_Ext,110,R-Value,2,4,DWORD,1
-BSJ_Ext,110,Special Value,6,4,DWORD,1
-BSJ_Ext,110,GPS Status,10,1,HEX,1
-BSJ_Ext,110,Backup Battery (V),11,2,WORD,10
-BSJ_Ext,110,Buffer Remaining,13,2,WORD,1
-BSJ_Ext,110,HDOP,15,2,WORD,100
+Category,SubID,FieldName,StartByte,Length,DataType,Scale,BitIndex,RefField,Text0,Text1
+Container,EB,Container EB,0,0,HEX,1,,,,
+Container,EC,Container EC,0,0,HEX,1,,,,
+Container,ED,Container ED,0,0,HEX,1,,,,
+Container,EF,Container EF,0,0,HEX,1,,,,
+Header,MsgID,Message ID,0,0,HEX,1,,,,
+Header,BodyAttr,Body Attr Raw,0,0,HEX,1,,,,
+Header,BodyLen,Body Length,0,0,INT,1,,,,
+Header,ProtoVer,Protocol Version,0,0,INT,1,,,,
+Header,TermID,CCID,0,0,STRING,1,,,,
+Header,TrackCount,Count Up Track,0,0,INT,1,,,,
+Standard,01,Alarm Sign,0,4,DWORD,1,,,,
+Calculated,00,Alm_SOS,0,0,BIT,1,0,Alarm Sign,Normal,SOS Alarm
+Calculated,00,Alm_OverSpeed,0,0,BIT,1,1,Alarm Sign,Normal,Over Speed
+Calculated,00,Alm_UnderVolt,0,0,BIT,1,7,Alarm Sign,Normal,Under Voltage
+Calculated,00,Alm_PowerCut,0,0,BIT,1,8,Alarm Sign,Normal,Power Off
+Calculated,00,Alm_Collision,0,0,BIT,1,29,Alarm Sign,Normal,Collision
+Standard,02,Status,4,4,DWORD,1,,,,
+Calculated,00,acc,0,0,BIT,1,0,Status,ACC OFF,ACC ON
+Calculated,00,Positioning,0,0,BIT,1,1,Status,Not Positioned,Positioned
+Calculated,00,Lat_Dir,0,0,BIT,1,2,Status,North Lat,South Lat
+Calculated,00,Lon_Dir,0,0,BIT,1,3,Status,East Lon,West Lon
+Calculated,00,Oil_State,0,0,BIT,1,10,Status,Oil Normal,Oil Disconnected
+Standard,03,lat,8,4,DWORD,1000000,,,,
+Standard,04,long,12,4,DWORD,1000000,,,,
+Standard,05,Altitude (m),16,2,SIGNED_WORD,1,,,,
+Standard,06,speed,18,2,WORD,10,,,,
+Standard,07,Degree,20,2,WORD,1,,,,
+Standard,08,time,22,6,BCD,1,,,,
+Main,01,Mileage (km),0,4,DWORD,10,,,,
+Main,03,ETC Speed (km/h),0,2,WORD,10,,,,
+Main,14,Video Alarm,0,4,DWORD,1,,,,
+Calculated,00,Vid_Signal_Lost,0,0,BIT,1,0,Video Alarm,Normal,Signal Lost
+Calculated,00,Vid_Signal_Block,0,0,BIT,1,1,Video Alarm,Normal,Signal Blocking
+Calculated,00,Vid_Storage_Fault,0,0,BIT,1,2,Video Alarm,Normal,Storage Fault
+Calculated,00,Vid_Equip_Failure,0,0,BIT,1,3,Video Alarm,Normal,Equip Failure
+Calculated,00,Vid_Over_Crowd,0,0,BIT,1,4,Video Alarm,Normal,Over Crowding
+Calculated,00,Vid_Abnormal_Drive,0,0,BIT,1,5,Video Alarm,Normal,Abnormal Driving
+Calculated,00,Vid_Reach_Thresh,0,0,BIT,1,6,Video Alarm,Normal,Reach Storage Thresh
+Main,15,Camera Connect Status,0,4,DWORD,1,,,,
+Calculated,00,Cam_Ch1,0,0,BIT,1,0,Camera Connect Status,Normal,Error
+Calculated,00,Cam_Ch2,0,0,BIT,1,1,Camera Connect Status,Normal,Error
+Calculated,00,Cam_Ch3,0,0,BIT,1,2,Camera Connect Status,Normal,Error
+Calculated,00,Cam_Ch4,0,0,BIT,1,3,Camera Connect Status,Normal,Error
+Main,17,Storage State,0,4,DWORD,1,,,,
+Calculated,00,Storage_Loss,0,0,BIT,1,0,Storage State,Normal,Storage Loss
+Main,25,Extend Status,0,4,DWORD,1,,,,
+Calculated,00,Ext_LowLight,0,0,BIT,1,0,Extend Status,OFF,ON
+Calculated,00,Ext_HighBeam,0,0,BIT,1,1,Extend Status,OFF,ON
+Calculated,00,Ext_RightTurn,0,0,BIT,1,2,Extend Status,OFF,ON
+Calculated,00,Ext_LeftTurn,0,0,BIT,1,3,Extend Status,OFF,ON
+Calculated,00,Ext_Brake,0,0,BIT,1,4,Extend Status,OFF,ON
+Calculated,00,Ext_Reverse,0,0,BIT,1,5,Extend Status,OFF,ON
+Calculated,00,Ext_FogLamp,0,0,BIT,1,6,Extend Status,OFF,ON
+Calculated,00,Ext_OutlineLamp,0,0,BIT,1,7,Extend Status,OFF,ON
+Calculated,00,Ext_Horn,0,0,BIT,1,8,Extend Status,OFF,ON
+Calculated,00,Ext_AirCond,0,0,BIT,1,9,Extend Status,OFF,ON
+Calculated,00,Ext_Neutral,0,0,BIT,1,10,Extend Status,OFF,ON
+Calculated,00,Ext_Retarder,0,0,BIT,1,11,Extend Status,OFF,ON
+Main,30,Network Strength,0,1,BYTE,1,,,,
+Main,31,Satellites use,0,1,BYTE,1,,,,
+Sub,0089,Ext Alarm I,0,4,DWORD,1,,,,
+Calculated,00,Alm1_Batt_Switch,0,0,BIT,1,0,Ext Alarm I,Batt Switch ON,Batt Switch OFF
+Calculated,00,Alm1_Term_Sleep,0,0,BIT,1,1,Ext Alarm I,Terminal Sleep,Terminal Normal
+Calculated,00,Alm1_Collision,0,0,BIT,1,4,Ext Alarm I,Collision Alarm,Normal
+Calculated,00,Alm1_Rapid_Accel,0,0,BIT,1,8,Ext Alarm I,Rapid Accel Alarm,Normal
+Calculated,00,Alm1_Rapid_Decel,0,0,BIT,1,9,Ext Alarm I,Rapid Decel Alarm,Normal
+Calculated,00,Alm1_Illegal_Rem,0,0,BIT,1,12,Ext Alarm I,Illegal Remove,Normal
+Calculated,00,Alm1_Sharp_Turn,0,0,BIT,1,25,Ext Alarm I,Sharp Turn Alarm,Normal
+Calculated,00,Alm1_Pseudo_Base_Det,0,0,BIT,1,30,Ext Alarm I,Pseudo Base Detected,Normal
+Calculated,00,Alm1_Pseudo_Base_Alm,0,0,BIT,1,31,Ext Alarm I,Pseudo Base Alarm,Normal
+Sub,00B2,SIM ICCID,0,10,HEX,1,,,,
+Sub,00C5,Ext Alarm II,0,4,DWORD,1,,,,
+Calculated,00,Alm2_Soft_Switch,0,0,BIT,1,0,Ext Alarm II,SW OFF,SW ON
+Calculated,00,Alm2_Mode,0,0,BIT,1,1,Ext Alarm II,Mode OFF,Mode ON
+Calculated,00,Alm2_Charging,0,0,BIT,1,2,Ext Alarm II,No Charging,Charging
+Calculated,00,Alm2_Unloading,0,0,BIT,1,5,Ext Alarm II,Unloading,Not Unloading
+Calculated,00,Alm2_Vibration,0,0,BIT,1,6,Ext Alarm II,Vibration Alarm,Normal
+Calculated,00,Alm2_Collision,0,0,BIT,1,7,Ext Alarm II,Collision Alarm,Normal
+Calculated,00,Alm2_A5E3,0,0,BIT,1,8,Ext Alarm II,A5E-3 Used,Disarm
+Calculated,00,Alm2_Moving,0,0,BIT,1,9,Ext Alarm II,Moving,Still
+Calculated,00,Alm2_GPS_Forced,0,0,BIT,1,12,Ext Alarm II,GPS Forced ON,GPS Not Forced ON
+Calculated,00,Alm2_Wire_Mode,0,0,BIT,1,13,Ext Alarm II,Wireless Mode,Wire Mode
+Calculated,00,Alm2_Light_Sens,0,0,BIT,1,14,Ext Alarm II,See the light,Not see the light
+Calculated,00,Alm2_GSensor,0,0,BIT,1,15,Ext Alarm II,G-Sensor Mode,Non-G-Sensor
+Calculated,00,Alm2_Infrared,0,0,BIT,1,16,Ext Alarm II,Infrared Abnormal,Infrared Normal
+Calculated,00,Alm2_High_Press,0,0,BIT,1,17,Ext Alarm II,High Pressure Alarm,Normal Pressure
+Calculated,00,Alm2_Record_Stat,0,0,BIT,1,18,Ext Alarm II,Record Abnormal,Record Normal
+Calculated,00,Alm2_Oil_Circ,0,0,BIT,1,22,Ext Alarm II,Oil Disconnected,Oil Connected
+Sub,00D5,Device IMEI,0,15,STRING,1,,,,
+Sub,00D8,4G Base Station (LBS),0,9,HEX,1,,,,
+Sub,00FB,Lock Sim Status,0,4,DWORD,1,,,,
+Sub,002D,External Voltage (V),0,4,DWORD,100,,,,
+Sub,0110,Mobile Network Operator,0,1,BYTE,1,,,,
+Sub,0110,DTC_Status,1,1,BYTE,1,,,,
+Sub,0110,R-Value,2,4,DWORD,1,,,,
+Sub,0110,Special Value,6,4,DWORD,1,,,,
+Sub,0110,GPS Status,10,1,HEX,1,,,,
+Sub,0110,Backup Battery (V),11,2,WORD,100,,,,
+Sub,0110,Buffer Remaining,13,2,WORD,1,,,,
+Sub,0110,HDOP,15,2,WORD,10,,,,
+Sub,0111,OBDII Ver,0,2,HEX,1,,,,
+Sub,0111,Fuel Type,2,1,BYTE,1,,,,
+Sub,0111,Engine Load (%),3,2,WORD,1,,,,
+Sub,0111,Coolant Temp,5,2,SIGNED_WORD,1,,,,
+Sub,0111,Fuel Press,7,2,WORD,1,,,,
+Sub,0111,Cabin Temp,9,2,SIGNED_WORD,1,,,,
+Sub,0111,Air Flow,11,2,WORD,1,,,,
+Sub,0111,Acc Pedal Pos (%),13,2,WORD,1,,,,
+Sub,0111,Batt Volt,15,2,WORD,10,,,,
+Sub,0111,Charge Status,17,1,BYTE,1,,,,
+Sub,0111,Total Distance (km),18,6,HEX,1,,,,
+Sub,0111,OBD Speed (km/h),24,2,WORD,10,,,,
+Sub,0111,RPM,26,2,WORD,1,,,,
+Sub,0111,Percent Batt (%),28,2,WORD,1,,,,
+Sub,0111,Engine Hour,30,2,WORD,1,,,,
+Sub,0111,Power,32,2,WORD,1,,,,
+Sub,0111,Power Consumt,34,4,DWORD,1,,,,
+Sub,0111,Engine Trip Fuel,38,4,DWORD,1,,,,
+Sub,0111,Pwr Consumt Per KM,42,4,DWORD,1,,,,
+Sub,0112,HW Ver,0,0,STRING,1,,,,
+Sub,0113,FW Ver,0,0,STRING,1,,,,
+Sub,0114,Driver ID (DLT),0,0,STRING,1,,,,
+Sub,0115,Shot Debug Log,0,0,STRING,1,,,,
+Sub,0116,Serial Number,0,0,HEX,1,,,,
